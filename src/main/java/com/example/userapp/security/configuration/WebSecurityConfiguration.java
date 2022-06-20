@@ -30,15 +30,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/registration/**").permitAll()
                     .antMatchers("/h2-console/**").permitAll()
-                    .antMatchers("/signIn/**").permitAll()
+                    .antMatchers("/signIn/**").hasAuthority("USER")
+                    .antMatchers("/upload-avatar/**").hasAuthority("USER")
+                    .antMatchers("/get-avatar/**").hasAuthority("USER")
                 .anyRequest()
                 .authenticated().and()
-                .formLogin();
+                .httpBasic();
 
         http.headers().frameOptions().sameOrigin();
     }
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 

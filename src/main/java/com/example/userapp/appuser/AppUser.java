@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Collections;
 
 
 @Getter
@@ -30,8 +32,11 @@ public class AppUser implements UserDetails {
             generator = "id_sequence"
     )
     private Long id;
-    private String email;
+        private String email;
     private String password;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "app_user_role")
+    private AppUserRole appUserRole;
 
 
     public AppUser(String email,
@@ -40,9 +45,16 @@ public class AppUser implements UserDetails {
         this.password = password;
     }
 
+    public AppUser(String email, String password, AppUserRole appUserRole) {
+        this.email = email;
+        this.password = password;
+        this.appUserRole = appUserRole;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(appUserRole.name());
+        return Collections.singletonList(authority);
     }
 
     @Override
