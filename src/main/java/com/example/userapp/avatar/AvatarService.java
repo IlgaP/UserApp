@@ -3,12 +3,14 @@ package com.example.userapp.avatar;
 import com.example.userapp.appuser.AppUser;
 import com.example.userapp.appuser.AppUserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -38,6 +40,8 @@ public class AvatarService {
         Optional<Avatar> maybeAvatar = avatarRepository.findById(id);
         if (maybeAvatar.isPresent()) {
             avatar = maybeAvatar.get().getAvatar();
+        } else {
+            throw new IllegalStateException("Avatar not found!");
         }
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(avatar);
     }

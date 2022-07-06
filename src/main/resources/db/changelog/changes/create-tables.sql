@@ -2,6 +2,8 @@
 
 --changeset ilga:1
 
+
+
 CREATE TABLE app_user
 (
     id VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
@@ -9,6 +11,9 @@ CREATE TABLE app_user
     password VARCHAR(255) NOT NULL,
     app_user_role VARCHAR(255) NOT NULL
 );
+
+INSERT INTO app_user (id, email, password, app_user_role)
+VALUES (1, 'user', '$2a$10$Mne9oMSwpvlwhUzKZ5/wJe/EAi7M3CXPQa9AlcIX7FH7oAO2EMYvu', 'USER');
 
 CREATE TABLE auth_token
 (
@@ -18,7 +23,7 @@ CREATE TABLE auth_token
     CONSTRAINT auth_token_app_user_id_fkey FOREIGN KEY (app_user_id) REFERENCES app_user (id)
 );
 
-CREATE SEQUENCE id_sequence START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE id_sequence START WITH 2 INCREMENT BY 1;
 
 CREATE TABLE avatar
 (

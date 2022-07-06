@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/signIn")
+@RequestMapping("/sign-in")
 public class SignInController {
 
     private final SignInService signInService;

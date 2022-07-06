@@ -30,6 +30,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/registration/**").permitAll()
                     .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("/swagger-ui/index.html").permitAll()
                     .antMatchers("/signIn/**").hasAuthority("USER")
                     .antMatchers("/upload-avatar/**").hasAuthority("USER")
                     .antMatchers("/get-avatar/**").hasAuthority("USER")
