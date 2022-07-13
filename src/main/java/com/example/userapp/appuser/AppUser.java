@@ -39,11 +39,6 @@ public class AppUser implements UserDetails {
     private AppUserRole appUserRole;
 
 
-    public AppUser(String email,
-                   String password) {
-        this.email = email;
-        this.password = password;
-    }
 
     public AppUser(String email, String password, AppUserRole appUserRole) {
         this.email = email;

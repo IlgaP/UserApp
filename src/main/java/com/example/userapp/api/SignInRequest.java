@@ -1,4 +1,4 @@
-package com.example.userapp.signin;
+package com.example.userapp.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

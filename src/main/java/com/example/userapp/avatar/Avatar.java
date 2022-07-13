@@ -22,17 +22,13 @@ public class Avatar {
     )
     private long id;
     @Lob
-    private byte[] avatar;
+    private byte[] file;
     @ManyToOne
     @JoinColumn(name = "app_user_id")
     private AppUser appUser;
 
-    public Avatar(byte[] avatar) {
-        this.avatar = avatar;
-    }
-
-    public Avatar(byte[] avatar, AppUser appUser) {
-        this.avatar = avatar;
+    public Avatar(byte[] file, AppUser appUser) {
+        this.file = file;
         this.appUser = appUser;
     }
 
