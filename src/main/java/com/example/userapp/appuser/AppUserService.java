@@ -2,18 +2,23 @@ package com.example.userapp.appuser;
 
 import com.example.userapp.api.RegistrationRequest;
 import com.example.userapp.api.SignInRequest;
-import com.example.userapp.avatar.Avatar;
-import com.example.userapp.avatar.AvatarRepository;
+import com.example.userapp.api.Avatar;
 import com.example.userapp.token.AuthToken;
 import com.example.userapp.token.AuthTokenRepository;
 import com.example.userapp.token.AuthTokenService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -86,6 +91,31 @@ public class AppUserService implements UserDetailsService {
         }
 
         appUserRepository.deleteById(id);
+    }
+
+    public String uploadAvatar(MultipartFile file) throws IOException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+        AppUser appUser = appUserRepository.findUserByEmail(userEmail);
+
+        Avatar avatar = new Avatar(file.getBytes(), appUser);
+
+        avatarRepository.save(avatar);
+        Long id = avatar.getId();
+
+        return "/get-avatar/" + id;
+    }
+
+    public ResponseEntity<byte[]> getAvatar(Long id) {
+        Optional<Avatar> avatar = avatarRepository.findById(id);
+        byte[] file;
+        if (avatar.isPresent()) {
+            file = avatar.get().getFile();
+        } else {
+            throw new IllegalStateException("Avatar not found!");
+        }
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(file);
     }
 
     @Override

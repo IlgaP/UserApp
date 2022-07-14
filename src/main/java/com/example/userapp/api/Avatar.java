@@ -1,4 +1,4 @@
-package com.example.userapp.avatar;
+package com.example.userapp.api;
 
 import com.example.userapp.appuser.AppUser;
 import lombok.Getter;

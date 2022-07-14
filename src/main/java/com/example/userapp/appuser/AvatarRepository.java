@@ -1,5 +1,6 @@
-package com.example.userapp.avatar;
+package com.example.userapp.appuser;
 
+import com.example.userapp.api.Avatar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
