@@ -85,10 +85,10 @@ public class AppUserService implements UserDetailsService {
         authTokenRepository.deleteById(tokenId);
 
         Optional<Avatar> avatar = avatarRepository.findAvatarByAppUserId(id);
-        if (avatar.isPresent()) {
-            Long avatarId = avatar.get().getId();
+        avatar.ifPresent(userAvatar -> {
+            Long avatarId = userAvatar.getId();
             avatarRepository.deleteById(avatarId);
-        }
+        });
 
         appUserRepository.deleteById(id);
     }
@@ -108,13 +108,10 @@ public class AppUserService implements UserDetailsService {
     }
 
     public ResponseEntity<byte[]> getAvatar(Long id) {
-        Optional<Avatar> avatar = avatarRepository.findById(id);
-        byte[] file;
-        if (avatar.isPresent()) {
-            file = avatar.get().getFile();
-        } else {
-            throw new IllegalStateException("Avatar not found!");
-        }
+        byte[] file = avatarRepository.findById(id)
+                .map(Avatar::getFile)
+                .orElseThrow(() -> new IllegalStateException("Avatar not found!"));
+
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(file);
     }
 
